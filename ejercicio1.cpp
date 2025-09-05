@@ -37,7 +37,7 @@ int main() {
     int N;
     cin >> N;
 
-    if (N < 1 || N > 1000000) {
+    if (N < 1 || N > 100000) {
         cout << "N fuera de rango" << endl;
         return 0;
     }
@@ -50,10 +50,21 @@ int main() {
         cin >> op;
 
         if (op == "ADD") {
-            int id, puntaje;
+            int id ;
+            int puntaje;
             string nombre;
             cin >> id >> nombre >> puntaje;
-
+            if (id < 1 || id > 1000000) {
+                cout << "id fuera de rango" << endl;
+            return 0;
+            }
+            if (puntaje < 0 || puntaje > 100000) {
+                cout << "puntaje fuera de rango" << endl;
+            return 0;
+            }
+            if (nombre.size() > 50) {
+                cout << "nombre invalido" << endl;
+            }
             JugadorPorId nuevoId{id, nombre, puntaje};
             JugadorPorPuntaje nuevoPuntaje{id, nombre, puntaje};
 
@@ -65,6 +76,10 @@ int main() {
         else if (op == "FIND") {
             int id;
             cin >> id;
+            if (id < 1 || id > 1000000) {
+                cout << "id fuera de rango" << endl;
+            return 0;
+            }
             JugadorPorId buscado{id, "", 0};
 
             if (porId.contains(buscado)) {
@@ -88,7 +103,7 @@ int main() {
         else if (op == "RANK") {
             int k;
             cin >> k;
-            //acá después armamos la función que cuente puntajes >= k
+            cout << porPuntaje.contarMayoresIguales(k) << endl;
         }
     }
 

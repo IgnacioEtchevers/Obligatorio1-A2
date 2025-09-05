@@ -33,6 +33,16 @@ private:
         return b;
     }
 
+int contarMayoresIguales(avl_node* n, int k) {
+    if (n == nullptr) return 0;
+
+    if (n->data.puntaje >= k) {
+        return 1 + contarMayoresIguales(n->left, k) + contarMayoresIguales(n->right, k);
+    } else {
+        return contarMayoresIguales(n->right, k);
+    }
+}
+
     // -------- Rotaciones --------
     avl_node* leftRotation(avl_node* z) {
         avl_node* y = z->right;
@@ -177,4 +187,9 @@ public:
     T max() {
         return maxNode(root);
     }
+
+    int contarMayoresIguales(int k) {
+    return contarMayoresIguales(root, k);
+    }
+
 };
