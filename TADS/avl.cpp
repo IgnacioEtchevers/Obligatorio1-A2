@@ -1,6 +1,7 @@
 #pragma once
 #include <cassert>
-#include <stdexcept>
+#include <string>
+#include <iostream>
 
 template <class T>
 class avl {
@@ -18,6 +19,8 @@ private:
 
     avl_node* root = nullptr;
     int count = 0;
+    int TOP = 0;
+    std :: string bestname;
 
     int height(avl_node* n) {
         if (n == nullptr) {
@@ -32,16 +35,6 @@ private:
         };
         return b;
     }
-
-int contarMayoresIguales(avl_node* n, int k) {
-    if (n == nullptr) return 0;
-
-    if (n->data.puntaje >= k) {
-        return 1 + contarMayoresIguales(n->left, k) + contarMayoresIguales(n->right, k);
-    } else {
-        return contarMayoresIguales(n->right, k);
-    }
-}
 
     // -------- Rotaciones --------
     avl_node* leftRotation(avl_node* z) {
@@ -101,6 +94,10 @@ int contarMayoresIguales(avl_node* n, int k) {
 
     avl_node* insert(T data, avl_node* n) {
         if (n == nullptr) {
+            if (TOP < data.puntaje){
+                TOP = data.puntaje;
+                bestname = data.nombre;
+            }
             count++;
             return new avl_node(data);
         }
@@ -159,6 +156,21 @@ int contarMayoresIguales(avl_node* n, int k) {
         return n->data;
     }
 
+    int MayoresIguales(avl_node*n, int punt, int contRet){
+        if (n == nullptr) {
+            return contRet;
+        }
+        if (n->data.puntaje >= punt){
+            contRet++;
+        }
+        contRet = MayoresIguales(n->left, punt, contRet);
+        contRet = MayoresIguales(n->right, punt, contRet);
+
+        return contRet;
+        
+    }
+        
+
 public:
     void insert(T data) {
         root = insert(data, root);
@@ -166,6 +178,13 @@ public:
 
     int size() {
         return count;
+    }
+    int ELMEJOR() {
+        return TOP;
+    }
+
+    std :: string ELMEJORNOMBRE(){
+        return bestname;
     }
 
     int getHeight() {
@@ -188,8 +207,8 @@ public:
         return maxNode(root);
     }
 
-    int contarMayoresIguales(int k) {
-    return contarMayoresIguales(root, k);
+    int contarMayoresIguales(int punt, int contRet){
+        return MayoresIguales(root, punt, contRet);
     }
 
 };

@@ -1,6 +1,9 @@
-#include <iostream>
+#include <cassert>
 #include <string>
-#include "TADS/avl.h"
+#include <iostream>
+
+#include "TADS/avl.cpp"
+
 using namespace std;
 
 // ------------------ Jugadores ------------------
@@ -9,9 +12,15 @@ struct JugadorPorId {
     string nombre;
     int puntaje;
 
-    bool operator<(JugadorPorId other) { return id < other.id; }
-    bool operator>(JugadorPorId other) { return id > other.id; }
-    bool operator==(JugadorPorId other) { return id == other.id; }
+    bool operator<(JugadorPorId other) { 
+        return id < other.id; 
+    }
+    bool operator>(JugadorPorId other) { 
+        return id > other.id; 
+    }
+    bool operator==(JugadorPorId other) { 
+        return id == other.id; 
+    }
 };
 
 struct JugadorPorPuntaje {
@@ -20,11 +29,15 @@ struct JugadorPorPuntaje {
     int puntaje;
 
     bool operator<(JugadorPorPuntaje other) {
-        if (puntaje == other.puntaje) return id < other.id;
+        if (puntaje == other.puntaje) {
+            return id < other.id;
+        };
         return puntaje < other.puntaje;
     }
     bool operator>(JugadorPorPuntaje other) {
-        if (puntaje == other.puntaje) return id > other.id;
+        if (puntaje == other.puntaje) {
+            return id > other.id;
+        };
         return puntaje > other.puntaje;
     }
     bool operator==(JugadorPorPuntaje other) {
@@ -37,11 +50,6 @@ int main() {
     int N;
     cin >> N;
 
-    if (N < 1 || N > 100000) {
-        cout << "N fuera de rango" << endl;
-        return 0;
-    }
-
     avl<JugadorPorId> porId;
     avl<JugadorPorPuntaje> porPuntaje;
 
@@ -50,21 +58,10 @@ int main() {
         cin >> op;
 
         if (op == "ADD") {
-            int id ;
-            int puntaje;
+            int id, puntaje;
             string nombre;
             cin >> id >> nombre >> puntaje;
-            if (id < 1 || id > 1000000) {
-                cout << "id fuera de rango" << endl;
-            return 0;
-            }
-            if (puntaje < 0 || puntaje > 100000) {
-                cout << "puntaje fuera de rango" << endl;
-            return 0;
-            }
-            if (nombre.size() > 50) {
-                cout << "nombre invalido" << endl;
-            }
+
             JugadorPorId nuevoId{id, nombre, puntaje};
             JugadorPorPuntaje nuevoPuntaje{id, nombre, puntaje};
 
@@ -76,10 +73,6 @@ int main() {
         else if (op == "FIND") {
             int id;
             cin >> id;
-            if (id < 1 || id > 1000000) {
-                cout << "id fuera de rango" << endl;
-            return 0;
-            }
             JugadorPorId buscado{id, "", 0};
 
             if (porId.contains(buscado)) {
@@ -96,16 +89,19 @@ int main() {
             if (porPuntaje.size() == 0) {
                 cout << "sin_jugadores" << endl;
             } else {
-                JugadorPorPuntaje top = porPuntaje.max();
-                cout << top.nombre << " " << top.puntaje << endl;
+                
+                cout << porPuntaje.ELMEJORNOMBRE() << " " << porPuntaje.ELMEJOR() << endl;
             }
         }
         else if (op == "RANK") {
-            int k;
-            cin >> k;
-            cout << porPuntaje.contarMayoresIguales(k) << endl;
+            if (porPuntaje.size() != 0) {
+                int punt;
+                cin >> punt;
+                int contRet=0;
+                int cantidad = porPuntaje.contarMayoresIguales(punt,contRet);
+                cout << cantidad << endl;
+            }
+            
         }
     }
-
-    return 0;
 }
