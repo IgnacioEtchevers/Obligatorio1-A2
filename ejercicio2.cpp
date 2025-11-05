@@ -14,7 +14,6 @@ int main() {
     int N;
     cin >> N;
 
-    closed_hash_map <K,V> cache;
 
     for (int i = 0; i < N; i++) {
         string op;
